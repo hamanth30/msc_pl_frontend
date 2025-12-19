@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 export default function UserHome() {
+  const navigate = useNavigate();
+
   const sports = [
-    { name: "Cricket" },
-    { name: "Basketball" },
-    { name: "Football" },
-    { name: "Volleyball" },
+    { name: "Cricket", path: "/cricket" },
+    { name: "Basketball", path: "/basketball" },
+    { name: "Football", path: "/football" },
+    { name: "Volleyball", path: "/volleyball" },
   ];
 
   return (
@@ -24,6 +28,7 @@ export default function UserHome() {
           <div key={index} className="flex flex-col items-center">
             {/* Circle */}
             <div
+              onClick={() => navigate(sport.path)}
               className="
                 w-32 h-32 rounded-full bg-gray-300
                 flex items-center justify-center
@@ -33,7 +38,6 @@ export default function UserHome() {
                 hover:shadow-xl
               "
             >
-              {/* Placeholder text (replace with image later) */}
               <span className="text-gray-600 font-medium">
                 Image
               </span>
