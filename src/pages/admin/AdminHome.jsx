@@ -1,27 +1,31 @@
 import { useState } from "react";
-import SportsSelector from "../../components/admin/SportsSelector.jsx";
-import AddNewTeam from "../../components/admin/AddTeam.jsx";
-import CreateFixtures from "../../components/admin/Fixtures.jsx";
-import UpdateResults from "../../components/admin/Results.jsx";
 
-const menus = [
-  "Add New Team",
-  "Create Fixtures",
-  "Update Match Results",
-];
+import SportSelector from "../../components/admin/SportsSelector";
+import CategorySelector from "../../components/admin/CategorySelector";
+import Fixtures from "../../components/admin/Fixtures"
+import AddTeam from "../../components/admin/AddTeam";
+import Results from "../../components/admin/Results"
+
+const menus = ["Add Team", "Create Fixtures", "Update Results"];
 
 export default function AdminHome() {
   const [selectedSport, setSelectedSport] = useState("Cricket");
-  const [activeMenu, setActiveMenu] = useState("Add New Team");
+  const [selectedCategory, setSelectedCategory] = useState("Men");
+  const [activeMenu, setActiveMenu] = useState("Add Team");
 
   const renderContent = () => {
+    const commonProps = {
+      sport: selectedSport,
+      category: selectedCategory,
+    };
+
     switch (activeMenu) {
-      case "Add New Team":
-        return <AddNewTeam sport={selectedSport} />;
+      case "Add Team":
+        return <AddTeam {...commonProps} />;
       case "Create Fixtures":
-        return <CreateFixtures sport={selectedSport} />;
-      case "Update Match Results":
-        return <UpdateResults sport={selectedSport} />;
+        return <Fixtures {...commonProps} />;
+      case "Update Results":
+        return <Results {...commonProps} />;
       default:
         return null;
     }
@@ -33,19 +37,23 @@ export default function AdminHome() {
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-5">
           <h1 className="text-3xl font-bold text-gray-800">
-            MSC Premier League
+            MSC Premier League – Admin
           </h1>
 
-          {/* Dropdown */}
-          <div className="mt-4">
+          {/* Selectors */}
+          <div className="flex gap-6 mt-4">
             <SportSelector
               value={selectedSport}
               onChange={setSelectedSport}
             />
+            <CategorySelector
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+            />
           </div>
 
           {/* Navbar */}
-          <div className="flex gap-8 mt-6 border-b border-gray-200">
+          <div className="flex gap-8 mt-6 border-b">
             {menus.map((menu) => (
               <button
                 key={menu}
@@ -65,8 +73,8 @@ export default function AdminHome() {
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div
-          key={`${selectedSport}-${activeMenu}`}
-          className="bg-white rounded-lg shadow-sm p-6 animate-fadeIn"
+          key={`${selectedSport}-${selectedCategory}-${activeMenu}`}
+          className="bg-white p-6 rounded-lg shadow animate-fadeIn"
         >
           {renderContent()}
         </div>
